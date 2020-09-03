@@ -1,0 +1,39 @@
+1) Login to Ansible Control Server --> become rootuser ---> Enable Password Authentication
+
+vi etc/ssh/sshd_config
+# PasswordAuthentication no  => PasswordAuthentication yes
+service sshd restart
+
+2)Create user ANSIBLE and give sudo permissions
+
+adduser ANSIBLE
+visudo
+ # in the file opened
+ ANSIBLE  ALL=(ALL:ALL) NOPASSWD:ALL
+
+# To test this
+su ANSIBLE
+sudo apt-get update
+# It should not ask for password and it should complete the command execution
+
+3) Install necessary softares on Ansible Control Server (Python & Ansible ) and on Ansible-Node (Python)
+ Repeat steps 1,2,3 for Ansible-Node
+ 
+ 
+4)Login in Ansible Control Server(acs) as ANSIBLE and configure password less login into Ansible-Node
+
+ssh ANSIBLE@<acspublicip>
+ssh-keygen
+ssh-copy-id ANSIBLE@<node1privateip>
+
+
+##############**********************************************************************************************##############
+To install ansible run the below commands:
+$ sudo apt update
+$ sudo apt install software-properties-common
+$ sudo apt-add-repository --yes --update ppa:ansible/ansible
+$ sudo apt install ansible
+
+#############**********************************************************************************************################
+Important link for sample playbook examples
+https://techexpert.tips/ansible/ansible-playbook-examples-ubuntu-linux/#:~:text=Ansible%20Playbook%20Example%20%2D%20Install%20a%20Package%20using%20Apt%2Dget&text=yml%20will%20install%20the%20Ntpdate,packages%20on%20All%20Ansible%20nodes.&text=To%20run%20this%20Ansible%20playbook%2C%20use%20the%20following%20command.&text=In%20our%20example%2C%20the%20Ansible,and%20install%20the%20required%20packages.
